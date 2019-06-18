@@ -17,8 +17,7 @@ class CreateRoomsTable extends Migration
             $table->increments('id');
             $table->string('name')->unique();
             $table->string('floor');
-            $table->string('price');
-            $table->string('status');
+            $table->string('status');//0=free, 1=rented
             $table->timestamps();
         });
     }

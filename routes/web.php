@@ -11,11 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+Route::get('/', 'DashboardController@index');
 
 //Phong
 Route::get('/phong', 'PhongController@index')->name('room.list');
 Route::get('/phong/tao-phong', 'PhongController@create')->name('room.create');
 Route::post('/phong/tao-phong', 'PhongController@store')->name('room.store');
+Route::get('/phong/xoa-phong/{id}', 'PhongController@destroy')->name('room.destroy');
+Route::get('/phong/sua-phong/{id}', 'PhongController@edit')->name('room.edit');
+Route::post('/phong/sua-phong/{id}', 'PhongController@update')->name('room.update');

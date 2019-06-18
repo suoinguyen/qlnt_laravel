@@ -1,5 +1,5 @@
 @extends('master')
-@section('title', 'Tạo phòng')
+@section('title', 'Sửa phòng')
 
 @section('css')
 @endsection
@@ -8,7 +8,7 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Tạo Phòng</h1>
+        <h1 class="h3 mb-0 text-gray-800">Sửa Phòng</h1>
     </div>
     @if(Session::has('existed'))
         <div class="alert alert-danger" role="alert">
@@ -27,14 +27,14 @@
     @endif
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="{{route('room.store')}}" id="form-create-room" method="POST">
+            <form action="{{route('room.update', $phong_detail->id)}}" id="form-create-room" method="POST">
                 @csrf
                 <div class="form-group">
                     <label for="room-name">Tên phòng<span class="text-danger"> *</span></label>
                     <input type="text"
                            class="form-control @error('room-name') is-invalid @enderror"
                            id="room-name" name="room-name" placeholder="Nhập tên phòng..."
-                           value="{{old('room-name')}}">
+                           value="{{old('room-name')?old('room-name'):(isset($phong_detail->name)?$phong_detail->name:'')}}">
                     @error('room-name')
                         <div class="invalid-feedback">{{$message}}</div>
                     @enderror
@@ -44,16 +44,16 @@
                     <select
                         class="form-control @error('number-of-floor') is-invalid @enderror"
                         id="number-of-floor" name="number-of-floor">
-                        <option value="0" {{old('number-of-floor')=='0'?'selected':''}}>Chọn tầng...</option>
-                        <option value="1" {{old('number-of-floor')=='1'?'selected':''}}>Tầng 1</option>
-                        <option value="2" {{old('number-of-floor')=='2'?'selected':''}}>Tầng 2</option>
-                        <option value="3" {{old('number-of-floor')=='3'?'selected':''}}>Tầng 3</option>
+                        <option value="0" {{(old('number-of-floor')?old('number-of-floor'):isset($phong_detail->floor)?$phong_detail->floor:'')=='0'?'selected':''}}>Chọn tầng...</option>
+                        <option value="1" {{(old('number-of-floor')?old('number-of-floor'):isset($phong_detail->floor)?$phong_detail->floor:'')=='1'?'selected':''}}>Tầng 1</option>
+                        <option value="2" {{(old('number-of-floor')?old('number-of-floor'):isset($phong_detail->floor)?$phong_detail->floor:'')=='2'?'selected':''}}>Tầng 2</option>
+                        <option value="3" {{(old('number-of-floor')?old('number-of-floor'):isset($phong_detail->floor)?$phong_detail->floor:'')=='3'?'selected':''}}>Tầng 3</option>
                     </select>
                     @error('number-of-floor')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-                <button type="submit" class="btn btn-primary btn-create-room">Tạo</button>
+                <button type="submit" class="btn btn-primary btn-create-room">Sửa</button>
             </form>
         </div>
     </div>
