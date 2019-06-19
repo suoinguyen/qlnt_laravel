@@ -19,7 +19,7 @@ class CreateContractsTable extends Migration
             $table->string('id_customer');
             $table->string('deposits_money');
             $table->string('status');//huy, con hieu luc
-            $table->dateTime('date_booked');
+            $table->dateTime('date_rented');
             $table->date('date_calc_money');
             $table->timestamps();
         });

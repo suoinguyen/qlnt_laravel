@@ -165,4 +165,13 @@ class PhongController extends Controller
             return redirect(route('room.list'))->with(['success' => 'Xóa phòng "'.$room_name.'" thành công.']);
         }
     }
+
+    public function bookRoom(Request $request, $id)
+    {
+        $room_detail = Phong::find($id);
+        if (!$room_detail){
+            return back()->with(['errors-cus' => 'Có lỗi xẩy ra. Không tìm thấy phòng trong hệ thống.']);
+        }
+        return view('phong.book-room', compact('room_detail'));
+    }
 }

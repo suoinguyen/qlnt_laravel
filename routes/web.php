@@ -20,3 +20,8 @@ Route::post('/phong/tao-phong', 'PhongController@store')->name('room.store');
 Route::get('/phong/xoa-phong/{id}', 'PhongController@destroy')->name('room.destroy');
 Route::get('/phong/sua-phong/{id}', 'PhongController@edit')->name('room.edit');
 Route::post('/phong/sua-phong/{id}', 'PhongController@update')->name('room.update');
+Route::get('/phong/dat-phong/{id}', 'PhongController@bookRoom')->name('room.bookRoom');
+Route::post('/phong/dat-phong/{id}', 'PhongController@saveBookRoom')->name('room.saveBookRoom');
+
+//Khach thue
+Route::get('/khach/tao-khach', 'KhachController@create')->name('room.create');

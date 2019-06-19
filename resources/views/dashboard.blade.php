@@ -53,10 +53,10 @@
                             <h6 class="m-0 font-weight-bold text-primary">Phòng {{$phong->name}}</h6>
                         </div>
                         <div class="card-body">
-                            <a href="#" class="btn btn-info btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-hand-peace"></i>
-                    </span>
+                            <a href="{{route('room.bookRoom', $phong->id)}}" class="btn btn-info btn-icon-split">
+                                <span class="icon text-white-50">
+                                  <i class="fas fa-hand-peace"></i>
+                                </span>
                                 <span class="text">Thuê phòng</span>
                             </a>
                         </div>
