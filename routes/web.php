@@ -24,4 +24,4 @@ Route::get('/phong/dat-phong/{id}', 'PhongController@bookRoom')->name('room.book
 Route::post('/phong/dat-phong/{id}', 'PhongController@saveBookRoom')->name('room.saveBookRoom');
 
 //Khach thue
-Route::get('/khach/tao-khach', 'KhachController@create')->name('room.create');
+Route::get('/khach/tao-khach', 'KhachController@create')->name('customer.create');

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\HopDong;
 use App\Phong;
+use App\Khach;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -64,12 +66,11 @@ class PhongController extends Controller
         }
 
         //Save
-        $phong_M = new Phong();
-        $phong_M->name = $room_name;
-        $phong_M->floor = $room_floor;
-        $phong_M->status = '0';
-
-        $result = $phong_M->save();
+        $params = array(
+            'room_name' => $room_name,
+            'room_floor' => $room_floor,
+        );
+        $result = Phong::createRoom($params);
 
         if ($result){
             return redirect(route('room.create'))->with(['success' => 'Tạo phòng thành công.']);
@@ -169,9 +170,70 @@ class PhongController extends Controller
     public function bookRoom(Request $request, $id)
     {
         $room_detail = Phong::find($id);
-        if (!$room_detail){
-            return back()->with(['errors-cus' => 'Có lỗi xẩy ra. Không tìm thấy phòng trong hệ thống.']);
-        }
         return view('phong.book-room', compact('room_detail'));
+    }
+
+    public function saveBookRoom(Request $request, $id)
+    {
+        $room_detail = Phong::find($id);
+        if (!$room_detail){
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không tìm thấy phòng trong hệ thống.']);
+        }
+
+        $all_data = $request->all();
+
+        //Validate
+        $messages = [
+            'customer-name.required' => 'Vui lòng nhập tên người thuê.',
+            'customer-phone.numeric' => 'SĐT không đúng chuẩn.',
+            'electric-number.required' => 'Vui lòng nhập số điện.',
+            'electric-number.numeric' => 'Phải là số.',
+            'water-number.required' => 'Vui lòng nhập số nước.',
+            'water-number.numeric' => 'Phải là số.',
+            'deposit-money.required' => 'Vui lòng nhập số tiền cọc.',
+            'deposit-money.numeric' => 'Phải là số.',
+            'date-rented.required' => 'Vui lòng nhập ngày thuê.',
+            'date-rented.date_format' => 'Ngày thuê phải có dạng Ngày/Tháng/Năm (30/12/2019)',
+            'date-calc-money.required' => 'Vui lòng nhập ngày chốt sổ.',
+            'date-calc-money.numeric' => 'Vui lòng chọn đúng ngày.',
+        ];
+        $rules = [
+            'customer-name' => 'required',
+            'customer-phone' => 'nullable|numeric',
+            'electric-number' => 'required|numeric',
+            'water-number' => 'required|numeric',
+            'deposit-money' => 'required|numeric',
+            'date-rented' => 'required|date_format:d/m/Y',
+            'date-calc-money' => 'required|numeric',
+        ];
+
+        Validator::make($all_data, $rules, $messages)->validate();
+
+        //Create customer
+        $result = Khach::createCustomer($all_data);
+
+        if (!$result || !isset($result->id) || empty($result->id)){
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không tạo được khách hàng.']);
+        }
+        $customer_id = $result->id;
+
+        //Create contract
+        $params = array(
+            'id_room' => $id,
+            'id_customer' => $customer_id,
+            'electric_number' => '',
+            'water_number' => '',
+            'people_count' => '',
+            'deposits_money' => '',
+            'date_rented' => '',
+            'date_calc_money' => '',
+        );
+        $result = HopDong::createContract($params);
+
+        if (!$result){
+            //TODO: delete customer if create contract fail
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không đặt được phòng.']);
+        }
+        return redirect(route('dashboard'))->with(['success' => 'Đặt phòng thành công.']);
     }
 }
