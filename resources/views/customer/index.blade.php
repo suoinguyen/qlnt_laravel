@@ -1,5 +1,5 @@
 @extends('master')
-@section('title', 'Danh sách phòng')
+@section('title', 'Danh sách khách thuê')
 
 @section('css')
     <!-- Custom styles for this page -->
@@ -9,7 +9,7 @@
 @section('content')
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Danh sách phòng</h1>
+        <h1 class="h3 mb-0 text-gray-800">Danh sách khách thuê</h1>
     </div>
     @if(Session::has('success'))
         <div class="alert alert-success" role="alert">
@@ -27,34 +27,36 @@
                 <table class="table table-bordered" id="dataTableRooms" width="100%" cellspacing="0">
                     <thead>
                     <tr>
-                        <th>Tên Phòng</th>
-                        <th>Trạng thái</th>
-                        <th>Tầng</th>
+                        <th>Tên Khách</th>
+                        <th>Phòng Thuê</th>
+                        <th>SĐT</th>
+                        <th>Quê Quán</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr>
-                        <th>Tên Phòng</th>
-                        <th>Trạng thái</th>
-                        <th>Tầng</th>
+                        <th>Tên Khách</th>
+                        <th>Phòng Thuê</th>
+                        <th>SĐT</th>
+                        <th>Quê Quán</th>
                         <th>Action</th>
                     </tr>
                     </tfoot>
                     <tbody>
-                    @if($list_phong)
-                        @foreach($list_phong as $phong)
+                    @if(isset($list_customer) && is_array($list_customer) && !empty($list_customer))
+                        @foreach($list_customer as $customer)
+                            @php
+                                $room_name = isset($customer['contracts']['rooms']['room_name'])?$customer['contracts']['rooms']['room_name']:'';
+                                $room_id = isset($customer['contracts']['rooms']['id'])?$customer['contracts']['rooms']['id']:'';
+                            @endphp
                             <tr>
-                                <td>{{$phong->name}}</td>
-                                @if($phong->status == '0')
-                                    <td><i class="fas fa-circle text-success"></i> Còn trống</td>
-                                @else
-                                    <td><i class="fas fa-circle text-danger"></i> Đã thuê</td>
-                                @endif
-                                <td>{{$phong->floor}}</td>
+                                <td>{{$customer['customer_name']}}</td>
+                                <td><a href="{{route('customer.edit', $room_id)}}">Phòng {{$room_name}}</a></td>
+                                <td>{{$customer['customer_phone_number']}}</td>
+                                <td>{{$customer['customer_hometown']}}</td>
                                 <td>
-                                    <a href="/phong/sua-phong/{{$phong->id}}" data-id="{{$phong->id}}" class="btn btn-sm btn-primary btn-edit">Sửa</a>
-                                    <a href="javascript:void(0)" data-id="{{$phong->id}}" data-name="{{$phong->name}}" class="btn btn-sm btn-danger btn-delete">Xóa</a>
+                                    <a href="{{route('customer.edit', $customer['id'])}}" class="btn btn-sm btn-primary btn-edit">Sửa</a>
                                 </td>
                             </tr>
                         @endforeach

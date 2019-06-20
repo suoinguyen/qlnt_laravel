@@ -4,12 +4,12 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Phong extends Model
+class Room extends Model
 {
     protected $table = 'rooms';
 
     public static function createRoom($params){
-        $phong_M = new Phong();
+        $phong_M = new Room();
         $phong_M->room_name = $params['room_name']?:'';
         $phong_M->room_floor = $params['room_floor']?:'';
         $phong_M->status = '0';

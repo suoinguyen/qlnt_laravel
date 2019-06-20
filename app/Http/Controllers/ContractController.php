@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Khach;
+use App\Contract;
 use Illuminate\Http\Request;
 
-class KhachController extends Controller
+class ContractController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class KhachController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Khach  $khach
+     * @param  \App\Contract  $hopDong
      * @return \Illuminate\Http\Response
      */
-    public function show(Khach $khach)
+    public function show(Contract $hopDong)
     {
         //
     }
@@ -52,10 +52,10 @@ class KhachController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Khach  $khach
+     * @param  \App\Contract  $hopDong
      * @return \Illuminate\Http\Response
      */
-    public function edit(Khach $khach)
+    public function edit(Contract $hopDong)
     {
         //
     }
@@ -64,10 +64,10 @@ class KhachController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Khach  $khach
+     * @param  \App\Contract  $hopDong
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Khach $khach)
+    public function update(Request $request, Contract $hopDong)
     {
         //
     }
@@ -75,10 +75,10 @@ class KhachController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Khach  $khach
+     * @param  \App\Contract  $hopDong
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Khach $khach)
+    public function destroy(Contract $hopDong)
     {
         //
     }

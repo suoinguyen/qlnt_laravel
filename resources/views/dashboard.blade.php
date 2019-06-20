@@ -48,15 +48,15 @@
         <h1 class="h3 mb-0 text-gray-800">Phòng trống</h1>
     </div>
     <div class="row">
-        @if(isset($list_phong_free) && $list_phong_free->count() > 0)
-            @foreach($list_phong_free as $phong)
+        @if(isset($list_room_free) && is_array($list_room_free) && !empty($list_room_free))
+            @foreach($list_room_free as $room)
                 <div class="col-lg-3 mb-4">
                     <div class="card shadow mb-4 border-left-success">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Phòng {{$phong->name}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Phòng {{$room['room_name']}}</h6>
                         </div>
                         <div class="card-body">
-                            <a href="{{route('room.bookRoom', $phong->id)}}" class="btn btn-info btn-icon-split">
+                            <a href="{{route('room.bookRoom', $room['id'])}}" class="btn btn-info btn-icon-split">
                                 <span class="icon text-white-50">
                                   <i class="fas fa-hand-peace"></i>
                                 </span>
@@ -76,12 +76,12 @@
         <h1 class="h3 mb-0 text-gray-800">Phòng đã thuê</h1>
     </div>
     <div class="row">
-        @if(isset($list_phong_rented) && $list_phong_rented->count() > 0)
-            @foreach($list_phong_rented as $phong)
+        @if(isset($list_room_rented) && is_array($list_room_rented) && !empty($list_room_rented))
+            @foreach($list_room_rented as $room)
                 <div class="col-lg-3 mb-4">
                     <div class="card shadow mb-4 border-left-danger">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Phòng {{$phong->name}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Phòng {{$room['room_name']}}</h6>
                         </div>
                         <div class="card-body">
                             <a href="#" class="btn btn-info btn-icon-split">
