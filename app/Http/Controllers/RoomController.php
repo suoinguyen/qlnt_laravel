@@ -84,9 +84,18 @@ class RoomController extends Controller
      * @param  \App\Room  $room
      * @return \Illuminate\Http\Response
      */
-    public function show(Room $room)
+    public function show(Room $room, $id)
     {
-        //
+        $room_detail = Room::find($id);
+        $contract_detail = array();
+        if ($room_detail) {
+            $contract_detail = $room_detail->contracts()->where('status', '=', '1')->with('customers')->first();
+            if ($contract_detail){
+                $contract_detail = $contract_detail->toArray();
+            }
+            $room_detail = $room_detail->toArray();
+        }
+        return view('room.show', compact('room_detail', 'contract_detail'));
     }
 
     /**
@@ -250,6 +259,27 @@ class RoomController extends Controller
             $delete_contract_result = $create_contract_result->delete();
             return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không đặt được phòng.']);
         }
-        return redirect(route('dashboard'))->with(['success' => 'Đặt phòng thành công.']);
+        return redirect(route('dashboard'))->with(['success' => 'Đặt phòng "'.$room_detail['room_name'].'" thành công.']);
+    }
+
+    public function cancelRoom(Request $request, $id){
+        dd(1111);
+    }
+
+    public function payBill(Request $request, $id){
+        $room_detail = Room::find($id);
+        $contract_detail = array();
+        if ($room_detail) {
+            $contract_detail = $room_detail->contracts()->where('status', '=', '1')->with('customers')->first();
+            if ($contract_detail){
+                $contract_detail = $contract_detail->toArray();
+            }
+            $room_detail = $room_detail->toArray();
+        }
+        return view('room.pay-bill', compact('room_detail', 'contract_detail'));
+    }
+
+    public function doPayBill(Request $request, $id){
+        dd(3333);
     }
 }

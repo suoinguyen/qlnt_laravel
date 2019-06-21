@@ -8,6 +8,11 @@ class Room extends Model
 {
     protected $table = 'rooms';
 
+    public function contracts()
+    {
+        return $this->hasMany('App\Contract', 'id_room', 'id');
+    }
+
     public static function createRoom($params){
         $phong_M = new Room();
         $phong_M->room_name = $params['room_name']?:'';

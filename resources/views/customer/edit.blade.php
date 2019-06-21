@@ -32,31 +32,40 @@
         @endif
         <div class="card shadow mb-4">
             <div class="card-body">
-                <form action="{{route('room.update', $customer_detail['id'])}}" id="form-create-room" method="POST">
+                <form action="{{route('customer.update', $customer_detail['id'])}}" id="form-create-room" method="POST">
                     @csrf
                     <div class="form-group">
-                        <label for="room_name">Tên phòng<span class="text-danger"> *</span></label>
+                        <label for="customer_name">Tên<span class="text-danger"> *</span>:</label>
                         <input type="text"
-                               class="form-control @error('room_name') is-invalid @enderror"
-                               id="room_name" name="room_name" placeholder="Nhập tên phòng..."
-                               value="{{old('room_name')?old('room_name'):(isset($customer_detail['room_name'])?$customer_detail['room_name']:'')}}">
-                        @error('room_name')
+                               class="form-control text-capitalize @error('customer_name') is-invalid @enderror"
+                               id="customer_name" name="customer_name"
+                               value="{{old('customer_name')?:(isset($customer_detail['customer_name'])?$customer_detail['customer_name']:'')}}"
+                               placeholder="">
+                        @error('customer_name')
                         <div class="invalid-feedback">{{$message}}</div>
                         @enderror
                     </div>
                     <div class="form-group">
-                        <label for="room_floor">Tầng<span class="text-danger"> *</span></label>
-                        <select
-                            class="form-control @error('room_floor') is-invalid @enderror"
-                            id="room_floor" name="room_floor">
-                            <option value="0" {{(old('room_floor')?old('room_floor'):isset($customer_detail['room_floor'])?$customer_detail['room_floor']:'')=='0'?'selected':''}}>Chọn tầng...</option>
-                            <option value="1" {{(old('room_floor')?old('room_floor'):isset($customer_detail['room_floor'])?$customer_detail['room_floor']:'')=='1'?'selected':''}}>Tầng 1</option>
-                            <option value="2" {{(old('room_floor')?old('room_floor'):isset($customer_detail['room_floor'])?$customer_detail['room_floor']:'')=='2'?'selected':''}}>Tầng 2</option>
-                            <option value="3" {{(old('room_floor')?old('room_floor'):isset($customer_detail['room_floor'])?$customer_detail['room_floor']:'')=='3'?'selected':''}}>Tầng 3</option>
-                        </select>
-                        @error('room_floor')
-                        <div class="invalid-feedback">{{ $message }}</div>
+                        <label for="customer_hometown">Quê quán:</label>
+                        <input type="text" class="form-control" id="customer_hometown" name="customer_hometown"
+                               placeholder=""
+                               value="{{old('customer_hometown')?:(isset($customer_detail['customer_hometown'])?$customer_detail['customer_hometown']:'')}}">
+                    </div>
+                    <div class="form-group">
+                        <label for="customer_phone_number">SĐT:</label>
+                        <input type="text"
+                               class="form-control @error('customer_phone_number') is-invalid @enderror"
+                               id="customer_phone_number" name="customer_phone_number"
+                               value="{{old('customer_phone_number')?:(isset($customer_detail['customer_phone_number'])?$customer_detail['customer_phone_number']:'')}}"
+                               placeholder="">
+                        @error('customer_phone_number')
+                        <div class="invalid-feedback">{{$message}}</div>
                         @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="customer_sub_infos">Thông tin thêm:</label>
+                        <textarea class="form-control" id="customer_sub_infos" name="customer_sub_infos"
+                                  rows="3">{{old('customer_sub_infos')?:(isset($customer_detail['customer_sub_infos'])?$customer_detail['customer_sub_infos']:'')}}</textarea>
                     </div>
                     <button type="submit" class="btn btn-primary btn-create-room">Sửa</button>
                 </form>
@@ -69,28 +78,7 @@
 @section('js')
     <script type="text/javascript">
         jQuery('document').ready(function ($) {
-           $('#form-create-room').on('submit', function () {
-               //Validate
-               var room_name = $('#room_name').val();
-               var room_floor = $('#room_floor').val();
-               var validate = false;
-               $('#room_name, #room_floor').removeClass('is-invalid');
-               if (room_name.length < 1){
-                   validate = true;
-                   $('#room_name').addClass('is-invalid');
-                   $('#room_name').parents('.form-group').remove('.invalid-feedback');
-                   $('#room_name').parents('.form-group').append('<div class="invalid-feedback">Vui lòng nhập tên phòng.</div>');
-               }
 
-               if (room_floor <= 0){
-                   validate = true;
-                   $('#room_floor').addClass('is-invalid');
-                   $('#room_floor').parents('.form-group').remove('.invalid-feedback');
-                   $('#room_floor').parents('.form-group').append('<div class="invalid-feedback">Vui lòng chọn tầng.</div>');
-               }
-
-               if (validate) return false;
-           })
         });
     </script>
 @endsection

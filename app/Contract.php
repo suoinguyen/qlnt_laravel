@@ -10,7 +10,11 @@ class Contract extends Model
 
     public function rooms()
     {
-        return $this->hasOne('App\Room', 'id', 'id_room');
+        return $this->belongsTo('App\Room', 'id_room', 'id');
+    }
+    public function customers()
+    {
+        return $this->belongsTo('App\Customer', 'id_customer', 'id');
     }
 
     public static function createContract($params){

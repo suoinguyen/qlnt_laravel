@@ -22,7 +22,16 @@ Route::get('/phong/sua-phong/{id}', 'RoomController@edit')->name('room.edit');
 Route::post('/phong/sua-phong/{id}', 'RoomController@update')->name('room.update');
 Route::get('/phong/dat-phong/{id}', 'RoomController@bookRoom')->name('room.bookRoom');
 Route::post('/phong/dat-phong/{id}', 'RoomController@saveBookRoom')->name('room.saveBookRoom');
+Route::get('/phong/{id}', 'RoomController@show')->name('room.show');
+Route::get('/phong/tra-phong/{id}', 'RoomController@cancelRoom')->name('room.cancelRoom');
+Route::get('/phong/thanh-toan/{id}', 'RoomController@payBill')->name('room.payBill');
+Route::post('/phong/thanh-toan/{id}', 'RoomController@doPayBill')->name('room.doPayBill');
 
 //Customer
 Route::get('/khach', 'CustomerController@index')->name('customer.list');
 Route::get('/khach/sua/{id}', 'CustomerController@edit')->name('customer.edit');
+Route::post('/khach/sua/{id}', 'CustomerController@update')->name('customer.update');
+Route::get('/khach/{id}', 'CustomerController@show')->name('customer.show');
+
+//Contract
+Route::get('/hop-dong/{id}', 'CustomerController@show')->name('contract.show');

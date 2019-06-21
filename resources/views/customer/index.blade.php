@@ -51,8 +51,8 @@
                                 $room_id = isset($customer['contracts']['rooms']['id'])?$customer['contracts']['rooms']['id']:'';
                             @endphp
                             <tr>
-                                <td>{{$customer['customer_name']}}</td>
-                                <td><a href="{{route('customer.edit', $room_id)}}">Phòng {{$room_name}}</a></td>
+                                <td><a href="{{route('customer.show', $customer['id'])}}">{{$customer['customer_name']}}</a></td>
+                                <td><a href="{{route('room.show', $room_id)}}">Phòng {{$room_name}}</a></td>
                                 <td>{{$customer['customer_phone_number']}}</td>
                                 <td>{{$customer['customer_hometown']}}</td>
                                 <td>

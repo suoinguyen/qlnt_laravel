@@ -53,7 +53,9 @@
                 <div class="col-lg-3 mb-4">
                     <div class="card shadow mb-4 border-left-success">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Phòng {{$room['room_name']}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                <a href="{{route('room.show', $room['id'])}}">Phòng {{$room['room_name']}}</a>
+                            </h6>
                         </div>
                         <div class="card-body">
                             <a href="{{route('room.bookRoom', $room['id'])}}" class="btn btn-info btn-icon-split">
@@ -81,17 +83,19 @@
                 <div class="col-lg-3 mb-4">
                     <div class="card shadow mb-4 border-left-danger">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Phòng {{$room['room_name']}}</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                <a href="{{route('room.show', $room['id'])}}">Phòng {{$room['room_name']}}</a>
+                            </h6>
                         </div>
                         <div class="card-body">
-                            <a href="#" class="btn btn-info btn-icon-split">
+                            <a href="{{route('room.cancelRoom', $room['id'])}}" class="btn btn-info btn-icon-split">
                                 <span class="icon text-white-50">
                                   <i class="fas fa-cash-register"></i>
                                 </span>
                                 <span class="text">Trả phòng</span>
                             </a>
                             <div class="my-2"></div>
-                            <a href="#" class="btn btn-warning btn-icon-split">
+                            <a href="{{route('room.payBill', $room['id'])}}" class="btn btn-warning btn-icon-split">
                                 <span class="icon text-white-50">
                                   <i class="fas fa-money-bill-alt"></i>
                                 </span>

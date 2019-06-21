@@ -14,18 +14,18 @@ class Customer extends Model
     }
 
     public static function createCustomer($params){
-        $khach_m = new Customer();
-        $khach_m->customer_name = $params['customer_name']?:'';
-        $khach_m->customer_hometown = $params['customer_hometown']?:'';
-        $khach_m->customer_phone_number = $params['customer_phone_number']?:'';
-        $khach_m->customer_sub_infos = $params['customer_sub_infos']?:'';
+        $customer_m = new Customer();
+        $customer_m->customer_name = $params['customer_name']?:'';
+        $customer_m->customer_hometown = $params['customer_hometown']?:'';
+        $customer_m->customer_phone_number = $params['customer_phone_number']?:'';
+        $customer_m->customer_sub_infos = $params['customer_sub_infos']?:'';
 
-        $result = $khach_m->save();
+        $result = $customer_m->save();
 
         if (!$result){
             return false;
         }
 
-        return $khach_m;
+        return $customer_m;
     }
 }

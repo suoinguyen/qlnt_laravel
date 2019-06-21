@@ -45,8 +45,8 @@
                     @if(isset($list_room) && is_array($list_room) && !empty($list_room))
                         @foreach($list_room as $room)
                             <tr>
-                                <td>{{$room['room_name']}}</td>
-                                @if($room['status'] == '0')
+                                <td><a href="{{route('room.show', $room['id'])}}">{{$room['room_name']}}</a></td>
+                                @if(empty($room['status']))
                                     <td><i class="fas fa-circle text-success"></i> Còn trống</td>
                                 @else
                                     <td><i class="fas fa-circle text-danger"></i> Đã thuê</td>
