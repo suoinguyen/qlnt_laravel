@@ -32,18 +32,18 @@
                         </div>
                         <!-- Card Body -->
                         <div class="card-body">
+                            <input type="hidden" id="customer_id" name="customer_id"
+                                   value="{{$contract_detail['customers']['id']}}">
                             <div class="form-group">
                                 <label for="customer_name">Tên:</label>
                                 <input type="text" readonly="readonly" class="form-control text-capitalize"
-                                       id="customer_name" name="customer_name"
                                        value="{{$contract_detail['customers']['customer_name']}}">
                             </div>
                             <div class="form-group">
                                 <label for="customer_phone_number">SĐT:</label>
                                 <input type="text" readonly="readonly"
                                        class="form-control"
-                                       id="customer_phone_number" name="customer_phone_number"
-                                       value="{{$contract_detail['customers']['customer_hometown']}}">
+                                       value="{{$contract_detail['customers']['customer_phone_number']}}">
                             </div>
                         </div>
                     </div>
@@ -57,62 +57,63 @@
                         <!-- Card Body -->
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="contract_electric_number">Ngày thuê:</label>
+                                <label for="bill_room_price">Giá thuê phòng:</label>
                                 <input type="text" class="form-control"
-                                       id="contract_date_rented" name="contract_date_rented"
-                                       value="{{old('contract_date_rented')}}">
+                                       id="bill_room_price" name="bill_room_price"
+                                       value="{{old('bill_room_price')}}">
                             </div>
                             <div class="form-group">
-                                <label for="contract_date_calc_money">Ngày chốt sổ:</label>
-                                <input type="text" class="form-control"
-                                       id="contract_date_calc_money" name="contract_date_calc_money"
-                                       value="{{old('contract_date_calc_money')}}">
+                                <label for="bill_date_calc_last">Ngày thanh toán kì trước:</label>
+                                <input type="text" class="form-control datepicker"
+                                       id="bill_date_calc_last" name="bill_date_calc_last"
+                                       value="{{old('bill_date_calc_last')}}">
                             </div>
                             <div class="form-group">
-                                <label for="contract_date_calc_money">Ngày thanh toán:</label>
-                                <input type="text" class="form-control"
-                                       id="contract_date_calc_money" name="contract_date_calc_money"
-                                       value="{{old('contract_date_calc_money')}}">
+                                <label for="bill_date_calc_new">Ngày thanh toán mới:</label>
+                                <input type="text" class="form-control datepicker"
+                                       id="bill_date_calc_new" name="bill_date_calc_new"
+                                       value="{{old('bill_date_calc_new')}}">
                             </div>
                             <div class="form-group">
-                                <label for="contract_date_calc_money">Số điện cũ:</label>
+                                <label for="bill_electric_number_last">Số điện kì trước:</label>
                                 <input type="text" class="form-control"
-                                       id="contract_date_calc_money" name="contract_date_calc_money"
-                                       value="{{old('contract_date_calc_money')}}">
+                                       id="bill_electric_number_last" name="bill_electric_number_last"
+                                       value="{{old('bill_electric_number_last')}}">
                             </div>
                             <div class="form-group">
-                                <label for="contract_date_calc_money">Số điện mới:</label>
+                                <label for="bill_electric_number_new">Số điện mới:</label>
                                 <input type="text" class="form-control"
-                                       id="contract_date_calc_money" name="contract_date_calc_money"
-                                       value="{{old('contract_date_calc_money')}}">
+                                       id="bill_electric_number_new" name="bill_electric_number_new"
+                                       value="{{old('bill_electric_number_new')}}">
                             </div>
                             <div class="form-group">
-                                <label for="contract_date_calc_money">Số nước cũ:</label>
+                                <label for="bill_water_number_last">Số nước kì trước:</label>
                                 <input type="text" class="form-control"
-                                       id="contract_date_calc_money" name="contract_date_calc_money"
-                                       value="{{old('contract_date_calc_money')}}">
+                                       id="bill_water_number_last" name="bill_water_number_last"
+                                       value="{{old('bill_water_number_last')}}">
                             </div>
                             <div class="form-group">
-                                <label for="contract_date_calc_money">Số nước mới:</label>
+                                <label for="bill_water_number_new">Số nước mới:</label>
                                 <input type="text" class="form-control"
-                                       id="contract_date_calc_money" name="contract_date_calc_money"
-                                       value="{{old('contract_date_calc_money')}}">
+                                       id="bill_water_number_new" name="bill_water_number_new"
+                                       value="{{old('bill_water_number_new')}}">
                             </div>
                             <div class="form-group">
                                 <label for="contract_date_calc_money font-weight-bold">Chi phí khác:</label>
-                                <div class="form-group">
+                                <div class="form-group form-group-addition">
                                     <div class="row">
-                                        <div class="col-md-5">
-                                            <input type="text" class="form-control" placeholder="Tên chi phí">
+                                        <div class="col-md-4">
+                                            <input type="text" name="addition-name-0" class="form-control addition-name" placeholder="Tên chi phí">
                                         </div>
-                                        <div class="col-md-5">
-                                            <input type="text" class="form-control" placeholder="Tên chi phí">
+                                        <div class="col-md-4">
+                                            <input type="text" name="addition-value-0" class="form-control addition-value" placeholder="Số tiền">
                                         </div>
-                                        <div class="col-md-2">
-                                            <button class="btn btn-primary">+</button>
+                                        <div class="col-md-4">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-primary btn-addition">+</button>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -140,6 +141,25 @@
                 todayBtn: 'linked',
                 todayHighlight: true
             });
+
+            var increment_num = $('.form-group-addition').length?$('.form-group-addition').length:0;
+            $('body').on('click', '.btn-addition', function () {
+                var form_group_parent = $(this).parents('.form-group-addition');
+                var clone_html = form_group_parent.clone();
+                var increment_num_plus = increment_num++;
+                clone_html.find('.addition-name').val('').attr('name', 'addition-name-'+increment_num_plus);
+                clone_html.find('.addition-value').val('').attr('name', 'addition-value-'+increment_num_plus);
+                if (clone_html.find('.btn-remove-addition').length === 0){
+                    clone_html.find('.btn-addition').after('<button type="button" class="btn btn-danger btn-remove-addition">-</button>');
+                }
+                form_group_parent.after(clone_html);
+            });
+
+            $('body').on('click', '.btn-remove-addition', function () {
+                var form_group_parent = $(this).parents('.form-group-addition');
+                form_group_parent.remove();
+            });
+
         });
     </script>
 @endsection
