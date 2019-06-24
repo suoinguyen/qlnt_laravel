@@ -82,6 +82,12 @@
                 </div>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('app.config')}}">
+                <i class="fas fa-cog"></i>
+                <span>Cài đặt</span>
+            </a>
+        </li>
     </ul>
     <!-- End of Sidebar -->
 

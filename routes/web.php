@@ -35,3 +35,7 @@ Route::get('/khach/{id}', 'CustomerController@show')->name('customer.show');
 
 //Contract
 Route::get('/hop-dong/{id}', 'CustomerController@show')->name('contract.show');
+
+//Config
+Route::get('/cai-dat', 'SettingController@index')->name('app.config');
+Route::post('/cai-dat/luu', 'SettingController@saveSetting')->name('app.config.save');
