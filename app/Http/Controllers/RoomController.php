@@ -266,7 +266,7 @@ class RoomController extends Controller
         dd(1111);
     }
 
-    public function payBill(Request $request, $id){
+    public function calcMoney(Request $request, $id){
         $room_detail = Room::find($id);
         $contract_detail = array();
         if ($room_detail) {
@@ -276,10 +276,10 @@ class RoomController extends Controller
             }
             $room_detail = $room_detail->toArray();
         }
-        return view('room.pay-bill', compact('room_detail', 'contract_detail'));
+        return view('room.calc-money', compact('room_detail', 'contract_detail'));
     }
 
-    public function doPayBill(Request $request, $id){
+    public function doCalcMoney(Request $request, $id){
         dd(3333);
     }
 }

@@ -20,7 +20,7 @@
                 <div class="group-btn">
                     @if($room_detail['status'])
                         <a href="{{route('room.cancelRoom', $room_detail['id'])}}" class="btn btn-info">Trả phòng</a>
-                        <a href="{{route('room.payBill', $room_detail['id'])}}" class="btn btn-warning">Thanh toán</a>
+                        <a href="{{route('room.calcMoney', $room_detail['id'])}}" class="btn btn-warning">Chốt sổ</a>
                     @else
                         <a href="{{route('room.bookRoom', $room_detail['id'])}}" class="btn btn-info">Thuê phòng</a>
                     @endif
@@ -97,7 +97,7 @@
             <div class="col-md-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Hóa đơn thanh toán</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">Hóa đơn thanh toán (chỉ khách hiện tại)</h6>
                     </div>
                     <div class="card-body">
                         <table class="table table-bordered" id="dataTableRooms" width="100%" cellspacing="0">
@@ -141,27 +141,32 @@
                             <thead>
                             <tr>
                                 <th>Tên Khách</th>
-                                <th>Ngày Thuê</th>
+                                <th>Ngày thuê</th>
+                                <th>Ngày trả phòng</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>Tên Phòng</th>
-                                <th>Ngày Thuê</th>
+                                <th>Tên Khách</th>
+                                <th>Ngày thuê</th>
+                                <th>Ngày trả phòng</th>
                             </tr>
                             </tfoot>
                             <tbody>
                                 <tr>
                                     <td><a href="">sadsd</a></td>
                                     <td>20/12/2019</td>
+                                    <td>20/12/2020</td>
                                 </tr>
                                 <tr>
                                     <td><a href="">sadsd</a></td>
                                     <td>20/12/2019</td>
+                                    <td>20/12/2020</td>
                                 </tr>
                                 <tr>
                                     <td><a href="">sadsd</a></td>
                                     <td>20/12/2019</td>
+                                    <td>20/12/2020</td>
                                 </tr>
                             </tbody>
                         </table>

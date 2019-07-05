@@ -95,11 +95,11 @@
                                 <span class="text">Trả phòng</span>
                             </a>
                             <div class="my-2"></div>
-                            <a href="{{route('room.payBill', $room['id'])}}" class="btn btn-warning btn-icon-split">
+                            <a href="{{route('room.calcMoney', $room['id'])}}" class="btn btn-warning btn-icon-split">
                                 <span class="icon text-white-50">
                                   <i class="fas fa-money-bill-alt"></i>
                                 </span>
-                                <span class="text">Thanh toán</span>
+                                <span class="text">Chốt sổ</span>
                             </a>
                         </div>
                     </div>

@@ -1,5 +1,5 @@
 @extends('master')
-@section('title', 'Đặt phòng')
+@section('title', 'Chốt sổ')
 
 @section('css')
     <link rel="stylesheet"
@@ -14,7 +14,7 @@
     @else
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">Thanh toán tiền phòng {{$room_detail['room_name']}}</h1>
+            <h1 class="h3 mb-0 text-gray-800">Tính tiền phòng {{$room_detail['room_name']}}</h1>
         </div>
         @if(Session::has('errors-cus'))
             <div class="alert alert-warning" role="alert">

@@ -26,6 +26,8 @@ Route::get('/phong/{id}', 'RoomController@show')->name('room.show');
 Route::get('/phong/tra-phong/{id}', 'RoomController@cancelRoom')->name('room.cancelRoom');
 Route::get('/phong/thanh-toan/{id}', 'RoomController@payBill')->name('room.payBill');
 Route::post('/phong/thanh-toan/{id}', 'RoomController@doPayBill')->name('room.doPayBill');
+Route::get('/phong/chot-so/{id}', 'RoomController@calcMoney')->name('room.calcMoney');
+Route::post('/phong/chot-so/{id}', 'RoomController@doCalcMoney')->name('room.doCalcMoney');
 
 //Customer
 Route::get('/khach', 'CustomerController@index')->name('customer.list');
