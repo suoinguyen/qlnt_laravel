@@ -64,7 +64,7 @@
                                 <label>Số người ở:</label>
                                 <input type="number"
                                        class="form-control"
-                                       name="people-count"
+                                       name="people_count"
                                        value="{{$contract_detail['contract_people_count']}}">
                             </div>
                             <div class="form-group">

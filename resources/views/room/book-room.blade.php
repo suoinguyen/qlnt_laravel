@@ -168,7 +168,10 @@
             $('.datepicker').datepicker({
                 format: 'dd/mm/yyyy',
                 todayBtn: 'linked',
-                todayHighlight: true
+                todayHighlight: true,
+                autoclose: true,
+                assumeNearbyYear: true,
+                language: 'vi'
             });
         });
     </script>

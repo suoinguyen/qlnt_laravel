@@ -373,16 +373,49 @@ class RoomController extends Controller
             $contract_detail = $contract_detail->toArray();
         }
 
+        $addition = isset($all_data['addition']) && is_array($all_data['addition']) && !empty($all_data['addition']) ? json_encode($all_data['addition']): '';
+
+        //Calc money per people
+        $calc_money_per_people = 0;
+        if ($all_data['people_count'] > 2){
+            $calc_money_per_people = ((int) $all_data['people_count'] - 2) * 100;
+        }
+
+        //Room Price
+        $room_price = (int) $all_data['bill_room_price'];
+
+        //Total day
+        $total_day = Helpers::calcTotalDay($all_data['bill_date_calc_last'], $all_data['bill_date_calc_new']);
+        if ($total_day === false){
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra, không tính được số ngày thuê.']);
+        }
+        //calc money per day
+        $calc_money_per_day = ((int)$total_day * $room_price) / 30;
+
+        //Calc money electric
+        $calc_money_electric = (int)$all_data['bill_electric_number_new'] - (int)$all_data['bill_electric_number_last'];
+        $calc_money_electric *=
+
+        //Calc money water
+        $calc_total = $calc_money_per_people +$calc_money_per_day;
         $params = array(
             'id_room' => $id,
-            'id_customer' => $customer_id,
-            'contract_electric_number' => $all_data['contract_electric_number']?:0,
-            'contract_water_number' => $all_data['contract_water_number']?:0,
-            'contract_people_count' => $all_data['contract_people_count']?:1,
-            'contract_deposits_money' => $all_data['contract_deposits_money']?:0,
-            'contract_date_rented' => $contract_date_rented?:'',
-            'contract_date_calc_money' => $all_data['contract_date_calc_money']?:'',
+            'id_customer' => $contract_detail['id_customer'],
+            'bill_people_count' => $all_data['bill_people_count'],
+            'bill_room_price' => $room_price,
+            'bill_date_calc_last' => $all_data['bill_date_calc_last'],
+            'bill_date_calc_new' => $all_data['bill_date_calc_new'],
+            'bill_electric_number_last' => $all_data['bill_electric_number_last'],
+            'bill_electric_number_new' => $all_data['bill_electric_number_new'],
+            'bill_water_number_last' => $all_data['bill_water_number_last'],
+            'bill_water_number_new' => $all_data['bill_water_number_new'],
+            'bill_addition' => $addition,
+            'bill_status' => $all_data['bill_status'],
+            'bill_notes' => $all_data['bill_notes'],
+            'bill_debt_money' => $all_data['bill_debt_money'],
         );
         $create_bill_result = Bill::createBill($params);
     }
+
+
 }

@@ -20,7 +20,13 @@
     @endif
     @if(Session::has('errors-cus'))
         <div class="alert alert-warning" role="alert">
-            {{Session::get('errors-cus')}}
+            @if(is_array(Session::get('errors-cus')))
+                @foreach(Session::get('errors-cus') as $error)
+                    <p>- {{$error}}</p>
+                @endforeach
+            @else
+                {{Session::get('errors-cus')}}
+            @endif
         </div>
     @endif
     <div class="card shadow mb-4">
