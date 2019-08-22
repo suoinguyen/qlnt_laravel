@@ -16,6 +16,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('sb-admin-2/css/sb-admin-2.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{asset('css/app.css')}}" rel="stylesheet" type="text/css">
 
     <!-- Css-->
     @yield('css')
@@ -23,7 +24,7 @@
 </head>
 
 <body id="page-top">
-
+<div class="se-pre-con"></div>
 <!-- Page Wrapper -->
 <div id="wrapper">
 
@@ -81,6 +82,12 @@
                     <a class="collapse-item" href="{{route('customer.list')}}">Danh sách khách thuê</a>
                 </div>
             </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{{route('collect.money')}}">
+                <i class="fas fa-cog"></i>
+                <span>Thu tiền</span>
+            </a>
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="{{route('app.config')}}">
@@ -310,8 +317,12 @@
 <!-- Core plugin JavaScript-->
 <script src="{{asset('sb-admin-2/vendor/jquery-easing/jquery.easing.min.js')}}"></script>
 
+<!-- Libs -->
+
+
 <!-- Custom scripts for all pages-->
 <script src="{{asset('sb-admin-2/js/sb-admin-2.min.js')}}"></script>
+<script src="{{asset('js/common.js')}}"></script>
 
 <!-- Js-->
 @yield('js')

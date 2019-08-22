@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Bill;
 use App\Contract;
+use App\Helpers\Helpers;
 use App\Room;
 use App\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use Illuminate\Database\Query\Builder;
 
 class RoomController extends Controller
 {
@@ -18,7 +22,11 @@ class RoomController extends Controller
     public function index()
     {
         //Get list Room
-        $list_room = Room::all()->toArray();
+        $list_room = Room::with([
+            'contracts' => function($query){
+                $query->where('contract_status', '=', '1');
+            }
+        ])->get()->toArray();
         return view('room.index', compact('list_room'));
     }
 
@@ -89,7 +97,7 @@ class RoomController extends Controller
         $room_detail = Room::find($id);
         $contract_detail = array();
         if ($room_detail) {
-            $contract_detail = $room_detail->contracts()->where('status', '=', '1')->with('customers')->first();
+            $contract_detail = $room_detail->contracts()->where('contract_status', '=', '1')->with('customers')->first();
             if ($contract_detail){
                 $contract_detail = $contract_detail->toArray();
             }
@@ -182,10 +190,12 @@ class RoomController extends Controller
     public function bookRoom(Request $request, $id)
     {
         $room_detail = Room::find($id);
+        $is_booked = false;
         if ($room_detail){
             $room_detail = $room_detail->toArray();
+            $is_booked = Room::checkRoomIsRented($id);
         }
-        return view('room.book-room', compact('room_detail'));
+        return view('room.book-room', compact('room_detail', 'is_booked'));
     }
 
     public function saveBookRoom(Request $request, $id)
@@ -233,53 +243,146 @@ class RoomController extends Controller
         $customer_id = $create_customer_result->id;
 
         //Create contract
+        $contract_date_rented = Helpers::dateSave($all_data['contract_date_rented']);
         $params = array(
             'id_room' => $id,
             'id_customer' => $customer_id,
-            'contract_electric_number' => $all_data['contract_electric_number']?:'',
-            'contract_water_number' => $all_data['contract_water_number']?:'',
-            'contract_people_count' => $all_data['contract_people_count']?:'',
-            'contract_deposits_money' => $all_data['contract_deposits_money']?:'',
-            'contract_date_rented' => $all_data['contract_date_rented']?:'',
+            'contract_electric_number' => $all_data['contract_electric_number']?:0,
+            'contract_water_number' => $all_data['contract_water_number']?:0,
+            'contract_people_count' => $all_data['contract_people_count']?:1,
+            'contract_deposits_money' => $all_data['contract_deposits_money']?:0,
+            'contract_date_rented' => $contract_date_rented?:'',
             'contract_date_calc_money' => $all_data['contract_date_calc_money']?:'',
         );
         $create_contract_result = Contract::createContract($params);
 
         if (!$create_contract_result){
             //Delete customer if create contract fail
-            $delete_customer_result = $create_customer_result->delete();
-
-            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không đặt được phòng.']);
-        }
-        //Update Room status
-        $room_detail->status = '1';
-        $update_room_result = $room_detail->save();
-        if (!$update_room_result){
-            $delete_customer_result = $create_customer_result->delete();
-            $delete_contract_result = $create_contract_result->delete();
-            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không đặt được phòng.']);
+            $create_customer_result->delete();
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra khi tạo hợp đồng. Không đặt được phòng.']);
         }
         return redirect(route('dashboard'))->with(['success' => 'Đặt phòng "'.$room_detail['room_name'].'" thành công.']);
     }
 
-    public function cancelRoom(Request $request, $id){
-        dd(1111);
+    public function checkoutRoom(Request $request, $id){
+        $room_detail = Room::find($id);
+        if (!$room_detail){
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không tìm thấy phòng trong hệ thống.']);
+        }
+        $contracts = Contract::where('id_room', $id)->get();
+        $check = true;
+        if ($contracts->count()){
+            foreach ($contracts as $contract){
+                $contract->contract_status = 0;
+                $res = $contract->save();
+                if (!$res){
+                    $check = false;
+                }
+            }
+        }
+        if (!$check){
+            return back()->withInput()->with(['errors-cus' => 'Thực hiện việc trả phòng thất bại!']);
+        }
+        return back()->withInput()->with(['success' => 'Thực hiện việc trả phòng thành công!']);
     }
 
     public function calcMoney(Request $request, $id){
         $room_detail = Room::find($id);
         $contract_detail = array();
+        $bill_detail = array();
         if ($room_detail) {
-            $contract_detail = $room_detail->contracts()->where('status', '=', '1')->with('customers')->first();
+            $contract_detail = $room_detail->contracts()->where('contract_status', '=', '1')->with('customers')->first();
             if ($contract_detail){
                 $contract_detail = $contract_detail->toArray();
             }
+
+            //Find newest bill
+            $bill_detail = $room_detail->bills()->first();
+            if ($bill_detail){
+                $bill_detail = $bill_detail->toArray();
+            }
+
             $room_detail = $room_detail->toArray();
         }
-        return view('room.calc-money', compact('room_detail', 'contract_detail'));
+        return view('room.calc-money', compact('room_detail', 'contract_detail', 'bill_detail'));
     }
 
     public function doCalcMoney(Request $request, $id){
-        dd(3333);
+        $room_detail = Room::find($id);
+        if (!$room_detail){
+            return back()->withInput()->with(['errors-cus' => 'Có lỗi xẩy ra. Không tìm thấy phòng trong hệ thống.']);
+        }
+
+        $all_data = $request->all();
+
+        //Validate
+        $messages = [
+            'bill_room_price.required' => 'Vui lòng nhập giá phòng.',
+            'bill_room_price.numeric' => 'Phải là số.',
+            'bill_date_calc_last.required' => 'Vui lòng nhập ngày thanh toán kì trước.',
+            'bill_date_calc_last.date_format' => 'Ngày phải có dạng: Ngày/Tháng/Năm (30/12/2019)',
+            'bill_date_calc_new.required' => 'Vui lòng nhập ngày thanh toán mới.',
+            'bill_date_calc_new.date_format' => 'Ngày phải có dạng: Ngày/Tháng/Năm (30/12/2019)',
+            'bill_electric_number_last.required' => 'Vui lòng nhập số điện kì trước.',
+            'bill_electric_number_last.numeric' => 'Phải là số.',
+            'bill_electric_number_new.required' => 'Vui lòng nhập số điện mới.',
+            'bill_electric_number_new.numeric' => 'Phải là số.',
+            'bill_water_number_last.required' => 'Vui lòng nhập số nước kì trước.',
+            'bill_water_number_last.numeric' => 'Phải là số.',
+            'bill_water_number_new.required' => 'Vui lòng nhập số nước mới.',
+            'bill_water_number_new.numeric' => 'Phải là số.',
+        ];
+        $rules = [
+            'bill_room_price' => 'required|numeric',
+            'bill_date_calc_last' => 'required|date_format:d/m/Y',
+            'bill_date_calc_new' => 'required|date_format:d/m/Y',
+            'bill_electric_number_last' => 'required|numeric',
+            'bill_electric_number_new' => 'required|numeric',
+            'bill_water_number_last' => 'required|numeric',
+            'bill_water_number_new' => 'required|numeric',
+        ];
+
+        if (isset($all_data['addition']) && !empty($all_data['addition']) && is_array($all_data['addition'])){
+            if (count($all_data['addition']) == 1){
+                foreach ($all_data['addition'] as $key_addition => $addition){
+                    if ($addition['name'] || $addition['value']){
+                        $rules['addition.*.name'] = 'required';
+                        $rules['addition.*.value'] = 'required|numeric';
+
+                        $messages['addition.*.name.required'] = 'Phải nhập tên.';
+                        $messages['addition.*.value.required'] = 'Phải nhập giá trị.';
+                        $messages['addition.*.value.numeric'] = 'Phải là số.';
+                    }
+                }
+            }else{
+                foreach ($all_data['addition'] as $key_addition => $addition){
+                    $rules['addition.*.name'] = 'required';
+                    $rules['addition.*.value'] = 'required|numeric';
+
+                    $messages['addition.*.name.required'] = 'Phải nhập tên.';
+                    $messages['addition.*.value.required'] = 'Phải nhập giá trị.';
+                    $messages['addition.*.value.numeric'] = 'Phải là số.';
+                }
+            }
+        }
+
+        Validator::make($all_data, $rules, $messages)->validate();
+
+        $contract_detail = $room_detail->contracts()->where('contract_status', '=', '1')->with('customers')->first();
+        if ($contract_detail){
+            $contract_detail = $contract_detail->toArray();
+        }
+
+        $params = array(
+            'id_room' => $id,
+            'id_customer' => $customer_id,
+            'contract_electric_number' => $all_data['contract_electric_number']?:0,
+            'contract_water_number' => $all_data['contract_water_number']?:0,
+            'contract_people_count' => $all_data['contract_people_count']?:1,
+            'contract_deposits_money' => $all_data['contract_deposits_money']?:0,
+            'contract_date_rented' => $contract_date_rented?:'',
+            'contract_date_calc_money' => $all_data['contract_date_calc_money']?:'',
+        );
+        $create_bill_result = Bill::createBill($params);
     }
 }

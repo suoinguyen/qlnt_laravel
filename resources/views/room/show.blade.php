@@ -18,8 +18,8 @@
                     Thông tin chi tiết phòng "{{isset($room_detail['room_name'])?$room_detail['room_name']:''}}"
                 </h1>
                 <div class="group-btn">
-                    @if($room_detail['status'])
-                        <a href="{{route('room.cancelRoom', $room_detail['id'])}}" class="btn btn-info">Trả phòng</a>
+                    @if($contract_detail)
+                        <a href="{{route('room.checkoutRoom', $room_detail['id'])}}" class="btn btn-info">Trả phòng</a>
                         <a href="{{route('room.calcMoney', $room_detail['id'])}}" class="btn btn-warning">Chốt sổ</a>
                     @else
                         <a href="{{route('room.bookRoom', $room_detail['id'])}}" class="btn btn-info">Thuê phòng</a>
@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            @if($room_detail['status'])
+            @if($contract_detail)
                 <div class="col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
@@ -75,7 +75,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4 font-weight-bold" for="customer_sub_infos">Ngày thuê:</label>
                                 <div class="col-sm-8">
-                                    {{isset($contract_detail['contract_date_rented'])?$contract_detail['contract_date_rented']:'00/00/00'}}
+                                    {{isset($contract_detail['contract_date_rented'])?\App\Helpers\Helpers::dateShow($contract_detail['contract_date_rented']):'00/00/00'}}
                                 </div>
                             </div>
                             <div class="form-group row">

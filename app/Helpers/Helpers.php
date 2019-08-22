@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Helpers {
 
@@ -26,5 +27,15 @@ class Helpers {
         }
 
         return $sett_arr;
+    }
+
+    public static function dateSave($value_save, $current_format = 'd/m/Y', $format_save = 'Y-m-d'){
+        $date = Carbon::createFromFormat($current_format, $value_save);
+        return $date->format($format_save);
+    }
+
+    public static function dateShow($value, $current_format = 'Y-m-d', $format_show = 'd/m/Y'){
+        $date = Carbon::createFromFormat($current_format, $value);
+        return $date->format($format_show);
     }
 }

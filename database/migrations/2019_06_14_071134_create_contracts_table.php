@@ -15,15 +15,15 @@ class CreateContractsTable extends Migration
     {
         Schema::create('contracts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('id_room');
-            $table->string('id_customer');
-            $table->string('contract_electric_number');
-            $table->string('contract_water_number');
-            $table->string('contract_people_count');
-            $table->string('contract_deposits_money');
-            $table->string('contract_date_rented');
-            $table->string('contract_date_calc_money');
-            $table->string('status');//0 = huy, 1 = con hieu luc
+            $table->integer('id_room');
+            $table->integer('id_customer');
+            $table->integer('contract_electric_number');
+            $table->integer('contract_water_number');
+            $table->integer('contract_people_count');
+            $table->integer('contract_deposits_money');
+            $table->date('contract_date_rented');
+            $table->integer('contract_date_calc_money');
+            $table->boolean('contract_status');//false = huy, true = con hieu luc
             $table->timestamps();
         });
     }

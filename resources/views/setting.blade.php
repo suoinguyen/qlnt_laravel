@@ -94,7 +94,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group col-md-12">
-                        <small class="form-text text-muted">*Chú ý: Đơn vị giá "nghìn đồng".</small>
+                        <small class="form-text text-muted">*Chú ý: Đơn vị giá "nghìn đồng". Ví dụ: 5 : 5000đ </small>
                     </div>
                     <div class="col-md-12">
                         <button type="submit" class="btn btn-primary">Submit</button>

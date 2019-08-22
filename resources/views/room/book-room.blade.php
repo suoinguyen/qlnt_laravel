@@ -11,7 +11,7 @@
         <div class="alert alert-warning" role="alert">
             Có lỗi xẩy ra. Không tìm thấy phòng trong hệ thống.
         </div>
-    @elseif($room_detail['status'] == '1')
+    @elseif($is_booked)
         <div class="alert alert-warning" role="alert">
             Phòng này đã được thuê rồi.
         </div>
@@ -48,7 +48,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="customer_hometown">Quê quán:</label>
-                                <input type="text" class="form-control" id="customer_hometown" name="customer_hometown"
+                                <input type="text" class="form-control text-capitalize" id="customer_hometown" name="customer_hometown"
                                        placeholder="" value="{{old('customer_hometown')}}">
                             </div>
                             <div class="form-group">

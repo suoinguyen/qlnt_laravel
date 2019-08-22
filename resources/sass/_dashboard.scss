@@ -1,0 +1,17 @@
+[data-toggle="collapse"]{
+    cursor: pointer;
+    .fa-angle-double-down{
+        display: none;
+    }
+    .fa-angle-double-up{
+        display: block;
+    }
+    &.collapsed{
+        .fa-angle-double-down{
+            display: block;
+        }
+        .fa-angle-double-up{
+            display: none;
+        }
+    }
+}

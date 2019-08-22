@@ -23,7 +23,7 @@ Route::post('/phong/sua-phong/{id}', 'RoomController@update')->name('room.update
 Route::get('/phong/dat-phong/{id}', 'RoomController@bookRoom')->name('room.bookRoom');
 Route::post('/phong/dat-phong/{id}', 'RoomController@saveBookRoom')->name('room.saveBookRoom');
 Route::get('/phong/{id}', 'RoomController@show')->name('room.show');
-Route::get('/phong/tra-phong/{id}', 'RoomController@cancelRoom')->name('room.cancelRoom');
+Route::get('/phong/tra-phong/{id}', 'RoomController@checkoutRoom')->name('room.checkoutRoom');
 Route::get('/phong/thanh-toan/{id}', 'RoomController@payBill')->name('room.payBill');
 Route::post('/phong/thanh-toan/{id}', 'RoomController@doPayBill')->name('room.doPayBill');
 Route::get('/phong/chot-so/{id}', 'RoomController@calcMoney')->name('room.calcMoney');
@@ -41,3 +41,7 @@ Route::get('/hop-dong/{id}', 'CustomerController@show')->name('contract.show');
 //Config
 Route::get('/cai-dat', 'SettingController@index')->name('app.config');
 Route::post('/cai-dat/luu', 'SettingController@saveSetting')->name('app.config.save');
+
+Route::get('/thu-tien', 'DashboardController@collectMoney')->name('collect.money');
+
+

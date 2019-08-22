@@ -13,6 +13,11 @@ class Customer extends Model
         return $this->hasOne('App\Contract', 'id_customer', 'id');
     }
 
+    public function bills()
+    {
+        return $this->hasMany('App\Bill', 'id_customer', 'id');
+    }
+
     public static function createCustomer($params){
         $customer_m = new Customer();
         $customer_m->customer_name = $params['customer_name']?:'';

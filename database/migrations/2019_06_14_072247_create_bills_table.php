@@ -13,13 +13,22 @@ class CreateBillsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bills', function (Blueprint $table) {
+        Schema::create('bills', function (Blueprint $table) {;
             $table->increments('id');
-            $table->string('id_room');
-            $table->string('id_customer');
-            $table->string('status');//da thanh toan, chua thanh toan, thanh toan 1 phan
-            $table->string('notes');
-            $table->string('debt_money');//tien no
+            $table->integer('id_room');
+            $table->integer('id_customer');
+            $table->integer('bill_people_count');
+            $table->integer('bill_room_price');
+            $table->date('bill_date_calc_last');
+            $table->date('bill_date_calc_new');
+            $table->integer('bill_electric_number_last');
+            $table->integer('bill_electric_number_new');
+            $table->integer('bill_water_number_last');
+            $table->integer('bill_water_number_new');
+            $table->string('bill_addition', 1000)->nullable();
+            $table->boolean('bill_status');//da thanh toan, chua thanh toan, thanh toan 1 phan
+            $table->string('bill_notes')->nullable();
+            $table->integer('bill_debt_money')->nullable();//tien no
             $table->timestamps();
         });
     }
